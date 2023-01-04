@@ -1,7 +1,9 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { signup } from "../apis/auth";
+import { login, signup } from "../apis/auth";
+import { IForm } from "../types/auth";
 import { validator } from "../utils/validator";
 
 const StContainer = styled.div`
@@ -112,16 +114,13 @@ const StButton = styled.button`
   font-family: inherit;
 `;
 
-interface IForm {
-  email: string;
-  password: string;
-}
-
 const Auth = () => {
   const [tab, setTab] = useState<"login" | "sign up">("login");
   const [form, setForm] = useState<IForm>({ email: "", password: "" });
   const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === "login") setTab("login");
@@ -134,11 +133,16 @@ const Auth = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (tab === "login") {
+      login(form)
+        .then(() => {
+          navigate("/todo");
+        })
+        .catch((err) => setErrorMessage(err.response.data.details));
     }
     if (tab === "sign up") {
-      signup(form.email, form.password)
-        .then((response) => {
-          console.log(response);
+      signup(form)
+        .then(() => {
+          login(form).then(() => navigate("/todo"));
         })
         .catch((err) => setErrorMessage(err.response.data.details));
     }
