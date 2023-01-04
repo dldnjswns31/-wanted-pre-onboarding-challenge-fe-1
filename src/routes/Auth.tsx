@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 const StContainer = styled.div`
@@ -36,13 +37,16 @@ const StTabContainer = styled.div`
   }
 `;
 
-const StTab = styled.button`
+const StTab = styled.button<{ isSelect: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   flex: 1 0;
   background: none;
   border: 1px solid black;
+  border-bottom: ${({ isSelect }) => (isSelect ? 0 : null)};
+  background-color: ${({ isSelect }) => (isSelect ? "#017BE8" : null)};
+  color: ${({ isSelect }) => (isSelect ? "white" : "black")};
   font-family: inherit;
 
   span {
@@ -81,6 +85,10 @@ const StInput = styled.input`
   height: 3rem;
   padding: 1rem;
   font-size: 1.2rem;
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const StError = styled.div`
@@ -93,30 +101,51 @@ const StButton = styled.button`
   margin-top: 1rem;
   border: none;
   border-radius: 10px;
+  background-color: #999999;
+  color: white;
   font-size: 2rem;
   font-weight: 700;
   font-family: inherit;
 `;
 
 const Auth = () => {
+  const [tab, setTab] = useState("login");
+
+  const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.name === "login") setTab("login");
+    if (e.currentTarget.name === "signup") setTab("sign up");
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
   return (
     <StContainer>
       <StTitle>My Todo List</StTitle>
       <StAuthContainer>
         <StTabContainer>
-          <StTab>
+          <StTab
+            name="login"
+            isSelect={tab === "login" ? true : false}
+            onClick={handleTabClick}
+          >
             <span>Login</span>
           </StTab>
-          <StTab>
-            <span>Regist</span>
+          <StTab
+            name="signup"
+            isSelect={tab === "sign up" ? true : false}
+            onClick={handleTabClick}
+          >
+            <span>Sign Up</span>
           </StTab>
         </StTabContainer>
         <StFormContainer>
-          <StForm>
+          <StForm onSubmit={handleSubmit}>
             <StInput type="text" placeholder="email" />
             <StInput type="password" placeholder="password" />
             <StError></StError>
-            <StButton>Login</StButton>
+            <StButton>{tab}</StButton>
           </StForm>
         </StFormContainer>
       </StAuthContainer>
