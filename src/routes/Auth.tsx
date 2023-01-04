@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
+import { signup } from "../apis/auth";
 
 const StContainer = styled.div`
   display: flex;
@@ -108,8 +109,14 @@ const StButton = styled.button`
   font-family: inherit;
 `;
 
+interface IForm {
+  email: string;
+  password: string;
+}
+
 const Auth = () => {
-  const [tab, setTab] = useState("login");
+  const [tab, setTab] = useState<"login" | "sign up">("login");
+  const [form, setForm] = useState<IForm>({ email: "", password: "" });
 
   const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === "login") setTab("login");
@@ -118,6 +125,19 @@ const Auth = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    signup(form.email, form.password)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, email: e.target.value }));
+  };
+
+  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, password: e.target.value }));
   };
 
   return (
@@ -142,8 +162,18 @@ const Auth = () => {
         </StTabContainer>
         <StFormContainer>
           <StForm onSubmit={handleSubmit}>
-            <StInput type="text" placeholder="email" />
-            <StInput type="password" placeholder="password" />
+            <StInput
+              type="text"
+              value={form.email || ""}
+              placeholder="email"
+              onChange={handleChangeEmail}
+            />
+            <StInput
+              type="password"
+              value={form.password || ""}
+              placeholder="password"
+              onChange={handleChangePassword}
+            />
             <StError></StError>
             <StButton>{tab}</StButton>
           </StForm>
