@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
 import { signup } from "../apis/auth";
+import { validator } from "../utils/validator";
 
 const StContainer = styled.div`
   display: flex;
@@ -93,7 +94,9 @@ const StInput = styled.input`
 `;
 
 const StError = styled.div`
+  width: 80%;
   margin-top: 1rem;
+  color: red;
 `;
 
 const StButton = styled.button`
@@ -102,7 +105,7 @@ const StButton = styled.button`
   margin-top: 1rem;
   border: none;
   border-radius: 10px;
-  background-color: #999999;
+  background-color: ${({ disabled }) => (disabled ? "#999999" : "#017BE8")};
   color: white;
   font-size: 2rem;
   font-weight: 700;
@@ -117,27 +120,44 @@ interface IForm {
 const Auth = () => {
   const [tab, setTab] = useState<"login" | "sign up">("login");
   const [form, setForm] = useState<IForm>({ email: "", password: "" });
+  const [isValid, setIsValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.name === "login") setTab("login");
     if (e.currentTarget.name === "signup") setTab("sign up");
+    setErrorMessage("");
+    setForm({ email: "", password: "" });
+    setIsValid(false);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    signup(form.email, form.password)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((err) => console.log(err));
+    if (tab === "login") {
+    }
+    if (tab === "sign up") {
+      signup(form.email, form.password)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => setErrorMessage(err.response.data.details));
+    }
   };
 
-  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, email: e.target.value }));
-  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.currentTarget;
+    let newForm = { ...form };
 
-  const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, password: e.target.value }));
+    if (name === "email") {
+      newForm.email = e.target.value;
+      setForm(newForm);
+    }
+    if (name === "password") {
+      newForm.password = e.target.value;
+      setForm(newForm);
+    }
+    if (validator(newForm)) setIsValid(true);
+    else setIsValid(false);
   };
 
   return (
@@ -164,18 +184,20 @@ const Auth = () => {
           <StForm onSubmit={handleSubmit}>
             <StInput
               type="text"
+              name="email"
               value={form.email || ""}
               placeholder="email"
-              onChange={handleChangeEmail}
+              onChange={handleInputChange}
             />
             <StInput
               type="password"
+              name="password"
               value={form.password || ""}
               placeholder="password"
-              onChange={handleChangePassword}
+              onChange={handleInputChange}
             />
-            <StError></StError>
-            <StButton>{tab}</StButton>
+            <StError>{errorMessage}</StError>
+            <StButton disabled={!isValid}>{tab}</StButton>
           </StForm>
         </StFormContainer>
       </StAuthContainer>
