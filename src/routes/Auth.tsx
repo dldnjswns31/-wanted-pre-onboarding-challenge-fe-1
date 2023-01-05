@@ -1,7 +1,8 @@
 import React from "react";
+import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+
 import { login, signup } from "../apis/auth";
 import { IForm } from "../types/auth";
 import { validator } from "../utils/validator";
@@ -135,14 +136,14 @@ const Auth = () => {
     if (tab === "login") {
       login(form)
         .then(() => {
-          navigate("/todo");
+          navigate("/");
         })
         .catch((err) => setErrorMessage(err.response.data.details));
     }
     if (tab === "sign up") {
       signup(form)
         .then(() => {
-          login(form).then(() => navigate("/todo"));
+          login(form).then(() => navigate("/"));
         })
         .catch((err) => setErrorMessage(err.response.data.details));
     }

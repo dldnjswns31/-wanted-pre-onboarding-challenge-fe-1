@@ -6,8 +6,8 @@ import Todo from "./routes/Todo";
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Todo />} />
       <Route path="/auth" element={<Auth />} />
-      <Route path="/todo" element={<Todo />} />
     </Routes>
   );
 }
