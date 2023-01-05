@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const StModalBackground = styled.div`
@@ -134,21 +134,37 @@ const StTodoContent = styled.div`
 `;
 
 const Todo = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen((prev) => !prev);
+  };
   return (
     <>
-      <StModalBackground>
-        <StModal>
-          <StModalTitle>New Todo</StModalTitle>
-          <StForm>
-            <input type="text" placeholder="title" />
-            <textarea name="" id="" cols={30} rows={5} placeholder="content" />
-            <div>
-              <StModalButton name="add">Add</StModalButton>
-              <StModalButton name="cancel">Cancel</StModalButton>
-            </div>
-          </StForm>
-        </StModal>
-      </StModalBackground>
+      {isModalOpen && (
+        <StModalBackground onClick={handleModalOpen}>
+          <StModal onClick={(e) => e.stopPropagation()}>
+            <StModalTitle>New Todo</StModalTitle>
+            <StForm>
+              <input type="text" placeholder="title" />
+              <textarea
+                name=""
+                id=""
+                cols={30}
+                rows={5}
+                placeholder="content"
+              />
+              <div>
+                <StModalButton name="add">Add</StModalButton>
+                <StModalButton name="cancel" onClick={handleModalOpen}>
+                  Cancel
+                </StModalButton>
+              </div>
+            </StForm>
+          </StModal>
+        </StModalBackground>
+      )}
+
       <StMainContainer>
         <StSection>
           <div>
@@ -158,7 +174,7 @@ const Todo = () => {
               <li>todo 2</li>
               <li>투두 3</li>
             </StTodoList>
-            <StAddButton>Add Todo</StAddButton>
+            <StAddButton onClick={handleModalOpen}>Add Todo</StAddButton>
           </div>
         </StSection>
         <StSection>
