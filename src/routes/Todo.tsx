@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { getTodos } from "../apis/todo";
 
 const StModalBackground = styled.div`
   position: absolute;
@@ -139,6 +140,10 @@ const Todo = () => {
   const handleModalOpen = () => {
     setIsModalOpen((prev) => !prev);
   };
+
+  const handleModalAddButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  };
   return (
     <>
       {isModalOpen && (
@@ -155,7 +160,9 @@ const Todo = () => {
                 placeholder="content"
               />
               <div>
-                <StModalButton name="add">Add</StModalButton>
+                <StModalButton name="add" onClick={handleModalAddButton}>
+                  Add
+                </StModalButton>
                 <StModalButton name="cancel" onClick={handleModalOpen}>
                   Cancel
                 </StModalButton>
