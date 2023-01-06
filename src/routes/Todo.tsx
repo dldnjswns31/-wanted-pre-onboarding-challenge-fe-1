@@ -171,7 +171,7 @@ const Todo = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleTodoChange = (
+  const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name } = e.currentTarget;
@@ -194,12 +194,12 @@ const Todo = () => {
                 type="text"
                 name="title"
                 placeholder="title"
-                onChange={handleTodoChange}
+                onChange={handleFormChange}
               />
               <StModalTodoContent
                 name="content"
                 placeholder="content"
-                onChange={handleTodoChange}
+                onChange={handleFormChange}
               />
               <div>
                 <StModalButton name="add">Add</StModalButton>

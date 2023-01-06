@@ -22,8 +22,7 @@ export const getTodosById = async (id: string) => {
 export const createTodo = async (todo: INewTodo) => {
   const { title, content } = todo;
   try {
-    await axiosInstance.post("/todos", { title, content });
-    return;
+    return await axiosInstance.post("/todos", { title, content });
   } catch (err) {
     throw err;
   }
@@ -33,8 +32,7 @@ export const updateTodo = async (todo: INewTodo, id: string) => {
   const { title, content } = todo;
 
   try {
-    await axiosInstance.put("/todos", { title, content }, { params: { id } });
-    return;
+    return await axiosInstance.put(`/todos/${id}`, { title, content });
   } catch (err) {
     throw err;
   }
@@ -42,8 +40,7 @@ export const updateTodo = async (todo: INewTodo, id: string) => {
 
 export const deleteTodo = async (id: string) => {
   try {
-    await axiosInstance.delete("/todos", { params: { id } });
-    return;
+    return await axiosInstance.delete("/todos", { params: { id } });
   } catch (err) {
     throw err;
   }
