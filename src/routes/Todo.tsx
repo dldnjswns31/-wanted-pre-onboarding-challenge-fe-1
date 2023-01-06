@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useMatch } from "react-router-dom";
 import styled from "styled-components";
 import { createTodo, getTodos } from "../apis/todo";
-import { ITodo } from "../types/todo";
+import { INewTodo, ITodo } from "../types/todo";
 
 const StModalBackground = styled.div`
   position: absolute;
@@ -105,10 +106,15 @@ const StSection = styled.section`
 const StTodoList = styled.ul`
   padding: 2rem 1rem;
   flex: 9 0;
+`;
 
-  li {
-    font-size: 1.5rem;
-  }
+const StTodo = styled.li`
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #999999;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
 `;
 
 const StAddButton = styled.button`
@@ -126,6 +132,12 @@ const StTodoDetail = styled.div`
   padding: 2rem 1rem;
 `;
 
+const StSelectHelper = styled.div`
+  justify-content: center;
+  font-size: 3rem;
+  text-align: center;
+`;
+
 const StTodoTitle = styled.div`
   flex: 1 0;
   font-size: 2rem;
@@ -138,14 +150,23 @@ const StTodoContent = styled.div`
 
 const Todo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [todoForm, setTodoForm] = useState<ITodo>({ title: "", content: "" });
+  const [todoForm, setTodoForm] = useState<INewTodo>({
+    title: "",
+    content: "",
+  });
+  const [todoList, setTodoList] = useState<null | ITodo[]>(null);
+
+  const todoRouteMatch = useMatch("/");
+
+  useEffect(() => {
+    getTodos().then((data) => setTodoList(data.data));
+  }, []);
 
   const handleModalOpen = () => {
+    if (isModalOpen) {
+      setTodoForm({ title: "", content: "" });
+    }
     setIsModalOpen((prev) => !prev);
-  };
-
-  const handleModalAddButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
   };
 
   const handleTodoSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -201,9 +222,10 @@ const Todo = () => {
           <div>
             <StSectionTitle>List</StSectionTitle>
             <StTodoList>
-              <li>todo 1</li>
-              <li>todo 2</li>
-              <li>투두 3</li>
+              {todoList &&
+                todoList?.map((todo) => (
+                  <StTodo key={todo.id}>{todo.title}</StTodo>
+                ))}
             </StTodoList>
             <StAddButton onClick={handleModalOpen}>Add Todo</StAddButton>
           </div>
@@ -212,8 +234,11 @@ const Todo = () => {
           <div>
             <StSectionTitle>Todo</StSectionTitle>
             <StTodoDetail>
-              <StTodoTitle>Todo Title</StTodoTitle>
-              <StTodoContent>Todo Content</StTodoContent>
+              {todoRouteMatch && (
+                <StSelectHelper>Select your todo</StSelectHelper>
+              )}
+              {/* <StTodoTitle>Todo Title</StTodoTitle>
+              <StTodoContent>Todo Content</StTodoContent> */}
             </StTodoDetail>
           </div>
         </StSection>

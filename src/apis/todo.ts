@@ -1,4 +1,4 @@
-import { ITodo } from "./../types/todo";
+import { INewTodo } from "./../types/todo";
 import { axiosInstance } from "./core/axiosInstance";
 
 export const getTodos = async () => {
@@ -23,7 +23,7 @@ export const getTodosById = async (id: number) => {
   }
 };
 
-export const createTodo = async (todo: ITodo) => {
+export const createTodo = async (todo: INewTodo) => {
   const { title, content } = todo;
   try {
     await axiosInstance.post("/todos", { title, content });
@@ -33,7 +33,7 @@ export const createTodo = async (todo: ITodo) => {
   }
 };
 
-export const updateTodo = async (todo: ITodo, id: string) => {
+export const updateTodo = async (todo: INewTodo, id: string) => {
   const { title, content } = todo;
 
   try {
