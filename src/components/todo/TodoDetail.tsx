@@ -39,17 +39,18 @@ const StModifyContent = styled.textarea`
   resize: none;
 `;
 
-const StButton = styled.button<{ color: "blue" | "red" }>`
+const StButton = styled.button<{ color: "blue" | "red" | "gray" }>`
   display: inline-block;
   width: 50%;
   border: none;
-  background-color: ${({ color }) => (color === "blue" ? "#017be8" : "red")};
+  background-color: ${({ color }) =>
+    color === "blue" ? "#017be8" : color === "red" ? "red" : "#cccccc"};
   color: white;
   font-family: inherit;
   font-size: 1.5rem;
 `;
 
-const TodoDetail = () => {
+const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
   const [todo, setTodo] = useState<null | ITodo>(null);
   const [isModify, setIsModify] = useState(false);
   const [todoForm, setTodoForm] = useState<INewTodo>({
@@ -99,16 +100,21 @@ const TodoDetail = () => {
       .then(() => {
         setIsModify((prev) => !prev);
         getTitleAndContent();
+        getTodoList();
       })
       .catch((err) => console.log(err));
   };
 
   const handleDeleteClick = () => {
-    deleteTodo(id!)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((err) => console.log(err));
+    const returnValue = window.confirm("정말 삭제하시겠습니까?");
+    if (returnValue) {
+      deleteTodo(id!)
+        .then(() => {
+          getTodoList();
+          navigate("/");
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -143,7 +149,7 @@ const TodoDetail = () => {
                 <StButton color="blue" onClick={handleConfirmClick}>
                   confirm
                 </StButton>
-                <StButton color="red" onClick={handleCancelClick}>
+                <StButton color="gray" onClick={handleCancelClick}>
                   cancel
                 </StButton>
               </>

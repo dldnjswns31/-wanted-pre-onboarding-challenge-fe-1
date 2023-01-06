@@ -153,8 +153,12 @@ const Todo = () => {
 
   const todoRouteMatch = useMatch("/");
 
-  useEffect(() => {
+  const getTodoList = () => {
     getTodos().then((data) => setTodoList(data.data));
+  };
+
+  useEffect(() => {
+    getTodoList();
   }, []);
 
   const handleModalOpen = () => {
@@ -167,7 +171,10 @@ const Todo = () => {
   const handleTodoSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createTodo(todoForm)
-      .then(() => setIsModalOpen((prev) => !prev))
+      .then(() => {
+        setIsModalOpen((prev) => !prev);
+        getTodoList();
+      })
       .catch((err) => console.log(err));
   };
 
@@ -236,7 +243,10 @@ const Todo = () => {
               </StSelectHelper>
             )}
             <Routes>
-              <Route path=":id" element={<TodoDetail />} />
+              <Route
+                path=":id"
+                element={<TodoDetail getTodoList={getTodoList} />}
+              />
             </Routes>
           </div>
         </StSection>
