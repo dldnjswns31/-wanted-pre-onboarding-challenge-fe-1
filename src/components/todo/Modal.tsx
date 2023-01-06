@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { createTodo } from "../../apis/todo";
-import { IModalProps } from "../../types/todo";
+import { IModalProps, INewTodo } from "../../types/todo";
 
 const StModalBackground = styled.div`
   position: absolute;
@@ -70,10 +70,13 @@ const StModalButton = styled.button`
 const Modal = ({
   setIsModalOpen,
   getTodoList,
-  todoForm,
-  setTodoForm,
   handleModalOpen,
 }: IModalProps) => {
+  const [todoForm, setTodoForm] = useState<INewTodo>({
+    title: "",
+    content: "",
+  });
+
   const handleTodoSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createTodo(todoForm)
@@ -95,6 +98,12 @@ const Modal = ({
       setTodoForm((prev) => ({ ...prev, content: e.target.value }));
     }
   };
+
+  const handleCancelClick = () => {
+    handleModalOpen();
+    setTodoForm({ title: "", content: "" });
+  };
+
   return (
     <StModalBackground onClick={handleModalOpen}>
       <StModal onClick={(e) => e.stopPropagation()}>
@@ -113,7 +122,7 @@ const Modal = ({
           />
           <div>
             <StModalButton name="add">Add</StModalButton>
-            <StModalButton name="cancel" onClick={handleModalOpen}>
+            <StModalButton name="cancel" onClick={handleCancelClick}>
               Cancel
             </StModalButton>
           </div>

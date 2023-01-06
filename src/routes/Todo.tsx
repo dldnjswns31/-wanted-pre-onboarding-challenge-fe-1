@@ -82,10 +82,6 @@ const StAddButton = styled.button`
 
 const Todo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [todoForm, setTodoForm] = useState<INewTodo>({
-    title: "",
-    content: "",
-  });
   const [todoList, setTodoList] = useState<null | ITodo[]>(null);
 
   const todoRouteMatch = useMatch("/");
@@ -99,9 +95,9 @@ const Todo = () => {
   }, []);
 
   const handleModalOpen = () => {
-    if (isModalOpen) {
-      setTodoForm({ title: "", content: "" });
-    }
+    // if (isModalOpen) {
+    //   setTodoForm({ title: "", content: "" });
+    // }
     setIsModalOpen((prev) => !prev);
   };
 
@@ -111,8 +107,6 @@ const Todo = () => {
         <Modal
           setIsModalOpen={setIsModalOpen}
           getTodoList={getTodoList}
-          todoForm={todoForm}
-          setTodoForm={setTodoForm}
           handleModalOpen={handleModalOpen}
         />
       )}
