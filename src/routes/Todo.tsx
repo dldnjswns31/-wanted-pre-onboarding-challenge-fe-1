@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useMatch } from "react-router-dom";
+import { Route, Routes, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import { createTodo, getTodos } from "../apis/todo";
+import TodoDetail from "../components/todo/TodoDetail";
 import { INewTodo, ITodo } from "../types/todo";
 
 const StModalBackground = styled.div`
@@ -138,16 +139,6 @@ const StSelectHelper = styled.div`
   text-align: center;
 `;
 
-const StTodoTitle = styled.div`
-  flex: 1 0;
-  font-size: 2rem;
-`;
-
-const StTodoContent = styled.div`
-  flex: 9 0;
-  font-size: 1.5rem;
-`;
-
 const Todo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoForm, setTodoForm] = useState<INewTodo>({
@@ -237,8 +228,9 @@ const Todo = () => {
               {todoRouteMatch && (
                 <StSelectHelper>Select your todo</StSelectHelper>
               )}
-              {/* <StTodoTitle>Todo Title</StTodoTitle>
-              <StTodoContent>Todo Content</StTodoContent> */}
+              <Routes>
+                <Route path="/:id" element={<TodoDetail />} />
+              </Routes>
             </StTodoDetail>
           </div>
         </StSection>
