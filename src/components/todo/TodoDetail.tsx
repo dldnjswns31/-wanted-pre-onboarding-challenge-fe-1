@@ -28,6 +28,7 @@ const StModifyTitle = styled.input`
   margin-bottom: 2rem;
   padding: 0.5rem 1rem;
   font-size: 2rem;
+  font-family: inherit;
 `;
 
 const StModifyContent = styled.textarea`

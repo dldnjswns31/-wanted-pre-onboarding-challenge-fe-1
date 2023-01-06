@@ -44,12 +44,8 @@ const StSection = styled.section`
   height: 700px;
   border: 1px solid black;
 
-  > div {
-    display: inline-flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-  }
+  display: inline-flex;
+  flex-direction: column;
 `;
 
 const StTodoList = styled.ul`
@@ -113,34 +109,30 @@ const Todo = () => {
 
       <StMainContainer>
         <StSection>
-          <div>
-            <StSectionTitle>List</StSectionTitle>
-            <StTodoList>
-              {todoList &&
-                todoList?.map((todo) => (
-                  <Link key={todo.id} to={`/${todo.id}`}>
-                    <StTodo>{todo.title}</StTodo>
-                  </Link>
-                ))}
-            </StTodoList>
-            <StAddButton onClick={handleModalOpen}>Add Todo</StAddButton>
-          </div>
+          <StSectionTitle>List</StSectionTitle>
+          <StTodoList>
+            {todoList &&
+              todoList?.map((todo) => (
+                <Link key={todo.id} to={`/${todo.id}`}>
+                  <StTodo>{todo.title}</StTodo>
+                </Link>
+              ))}
+          </StTodoList>
+          <StAddButton onClick={handleModalOpen}>Add Todo</StAddButton>
         </StSection>
         <StSection>
-          <div>
-            <StSectionTitle>Todo</StSectionTitle>
-            {todoRouteMatch && (
-              <StSelectHelper>
-                <span>Select your todo</span>
-              </StSelectHelper>
-            )}
-            <Routes>
-              <Route
-                path=":id"
-                element={<TodoDetail getTodoList={getTodoList} />}
-              />
-            </Routes>
-          </div>
+          <StSectionTitle>Todo</StSectionTitle>
+          {todoRouteMatch && (
+            <StSelectHelper>
+              <span>Select your todo</span>
+            </StSelectHelper>
+          )}
+          <Routes>
+            <Route
+              path=":id"
+              element={<TodoDetail getTodoList={getTodoList} />}
+            />
+          </Routes>
         </StSection>
       </StMainContainer>
     </>
