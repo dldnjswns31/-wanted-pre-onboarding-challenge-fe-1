@@ -40,7 +40,7 @@ export const updateTodo = async (todo: INewTodo, id: string) => {
 
 export const deleteTodo = async (id: string) => {
   try {
-    return await axiosInstance.delete("/todos", { params: { id } });
+    return await axiosInstance.delete(`/todos/${id}`);
   } catch (err) {
     throw err;
   }

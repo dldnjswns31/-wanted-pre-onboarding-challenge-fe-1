@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { getTodosById, updateTodo } from "../../apis/todo";
+import { deleteTodo, getTodosById, updateTodo } from "../../apis/todo";
 import { INewTodo, ITodo } from "../../types/todo";
 
 const StTodoDetail = styled.div`
@@ -58,6 +58,7 @@ const TodoDetail = () => {
   });
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const getTitleAndContent = () => {
     getTodosById(id!)
@@ -95,9 +96,17 @@ const TodoDetail = () => {
 
   const handleConfirmClick = () => {
     updateTodo(todoForm, id!)
-      .then((res) => {
+      .then(() => {
         setIsModify((prev) => !prev);
         getTitleAndContent();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDeleteClick = () => {
+    deleteTodo(id!)
+      .then(() => {
+        navigate("/");
       })
       .catch((err) => console.log(err));
   };
@@ -143,7 +152,9 @@ const TodoDetail = () => {
                 <StButton color="blue" onClick={handleModifyClick}>
                   modify
                 </StButton>
-                <StButton color="red">delete</StButton>
+                <StButton color="red" onClick={handleDeleteClick}>
+                  delete
+                </StButton>
               </>
             )}
           </StButtonContainer>
