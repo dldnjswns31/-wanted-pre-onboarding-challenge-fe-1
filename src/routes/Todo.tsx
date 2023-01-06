@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Route, Routes, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import { createTodo, getTodos } from "../apis/todo";
@@ -33,7 +34,7 @@ const StModalTitle = styled.h3`
 const StForm = styled.form`
   width: 100%;
   height: 80%;
-  div {
+  > div {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -75,11 +76,11 @@ const StMainContainer = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  section:nth-child(odd) {
+  > section:nth-child(odd) {
     margin-right: 1rem;
   }
 
-  section:nth-child(even) {
+  > section:nth-child(even) {
     margin-left: 1rem;
   }
 `;
@@ -91,12 +92,22 @@ const StSectionTitle = styled.h3`
   text-align: center;
 `;
 
+const StSelectHelper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+  text-align: center;
+`;
+
 const StSection = styled.section`
   width: 500px;
   height: 700px;
   border: 1px solid black;
 
-  div {
+  > div {
     display: inline-flex;
     flex-direction: column;
     width: 100%;
@@ -107,6 +118,11 @@ const StSection = styled.section`
 const StTodoList = styled.ul`
   padding: 2rem 1rem;
   flex: 9 0;
+
+  > a {
+    color: black;
+    text-decoration: none;
+  }
 `;
 
 const StTodo = styled.li`
@@ -125,18 +141,6 @@ const StAddButton = styled.button`
   color: white;
   font-size: 1.5rem;
   font-family: inherit;
-`;
-
-const StTodoDetail = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 2rem 1rem;
-`;
-
-const StSelectHelper = styled.div`
-  justify-content: center;
-  font-size: 3rem;
-  text-align: center;
 `;
 
 const Todo = () => {
@@ -215,7 +219,9 @@ const Todo = () => {
             <StTodoList>
               {todoList &&
                 todoList?.map((todo) => (
-                  <StTodo key={todo.id}>{todo.title}</StTodo>
+                  <Link key={todo.id} to={`/${todo.id}`}>
+                    <StTodo>{todo.title}</StTodo>
+                  </Link>
                 ))}
             </StTodoList>
             <StAddButton onClick={handleModalOpen}>Add Todo</StAddButton>
@@ -224,14 +230,14 @@ const Todo = () => {
         <StSection>
           <div>
             <StSectionTitle>Todo</StSectionTitle>
-            <StTodoDetail>
-              {todoRouteMatch && (
-                <StSelectHelper>Select your todo</StSelectHelper>
-              )}
-              <Routes>
-                <Route path="/:id" element={<TodoDetail />} />
-              </Routes>
-            </StTodoDetail>
+            {todoRouteMatch && (
+              <StSelectHelper>
+                <span>Select your todo</span>
+              </StSelectHelper>
+            )}
+            <Routes>
+              <Route path=":id" element={<TodoDetail />} />
+            </Routes>
           </div>
         </StSection>
       </StMainContainer>
