@@ -10,13 +10,9 @@ export const getTodos = async () => {
   }
 };
 
-export const getTodosById = async (id: number) => {
+export const getTodosById = async (id: string) => {
   try {
-    const { data } = await axiosInstance("/todos", {
-      params: {
-        id,
-      },
-    });
+    const { data } = await axiosInstance(`/todos/${id}`);
     return data;
   } catch (err) {
     throw err;
