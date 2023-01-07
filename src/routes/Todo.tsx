@@ -41,8 +41,9 @@ const StSelectHelper = styled.div`
 `;
 
 const StSection = styled.section`
+  width: 500px;
   min-width: 500px;
-  min-height: 700px;
+  height: 700px;
   border: 1px solid black;
 
   display: inline-flex;

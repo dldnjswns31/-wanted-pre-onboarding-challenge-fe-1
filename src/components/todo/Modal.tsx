@@ -114,6 +114,7 @@ const Modal = ({
             name="title"
             placeholder="title"
             onChange={handleFormChange}
+            autoFocus
           />
           <StModalTodoContent
             name="content"
