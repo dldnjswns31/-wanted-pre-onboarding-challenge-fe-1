@@ -76,7 +76,7 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
 
   useEffect(() => {
     getTitleAndContent();
-  }, []);
+  }, [id]);
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
