@@ -35,6 +35,7 @@ const StTabContainer = styled.div`
   flex: 1 0;
 
   button:first-child {
+    border-right: none;
     border-radius: 1rem 0 0 0;
   }
   button:last-child {
@@ -89,6 +90,7 @@ const StInput = styled.input`
   width: 80%;
   height: 3rem;
   padding: 1rem;
+  border: 1px solid black;
   font-size: 1.2rem;
 
   &:focus {
