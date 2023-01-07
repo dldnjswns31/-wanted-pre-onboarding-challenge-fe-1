@@ -68,7 +68,10 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
         setTodo(data.data);
         setTodoForm({ title: data.data.title, content: data.data.content });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        alert("존재하지 않거나 이미 삭제된 Todo입니다.");
+        navigate("/");
+      });
   };
 
   useEffect(() => {

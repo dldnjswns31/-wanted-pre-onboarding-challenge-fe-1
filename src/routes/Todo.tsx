@@ -32,11 +32,10 @@ const StSectionTitle = styled.h3`
 `;
 
 const StSelectHelper = styled.div`
-  display: flex;
+  flex: 1 0;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
   font-size: 3rem;
   text-align: center;
 `;
