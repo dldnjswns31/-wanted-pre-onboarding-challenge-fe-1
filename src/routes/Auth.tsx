@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 
 import { login, signup } from "../apis/auth";
 import { IForm } from "../types/auth";
 import { validator } from "../utils/validator";
+import { isLoginState } from "../recoil/atoms";
 
 const StContainer = styled.div`
   display: flex;
@@ -123,6 +124,8 @@ const Auth = () => {
   const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const setIsLogin = useSetRecoilState(isLoginState);
+
   const navigate = useNavigate();
 
   const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -138,6 +141,7 @@ const Auth = () => {
     if (tab === "login") {
       login(form)
         .then(() => {
+          setIsLogin(true);
           navigate("/");
         })
         .catch((err) => setErrorMessage(err.response.data.details));

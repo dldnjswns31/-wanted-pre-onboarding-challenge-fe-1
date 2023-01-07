@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Route, Routes, useMatch } from "react-router-dom";
+import { Link, useNavigate, Route, Routes, useMatch } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getTodos } from "../apis/todo";
+
 import Modal from "../components/todo/Modal";
 import TodoDetail from "../components/todo/TodoDetail";
+import { isLoginState } from "../recoil/atoms";
+import { getTodos } from "../apis/todo";
 import { ITodo } from "../types/todo";
 import { removeToken } from "../utils/authToken";
 
@@ -97,6 +99,7 @@ const Todo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoList, setTodoList] = useState<null | ITodo[]>(null);
 
+  const setIsLogin = useSetRecoilState(isLoginState);
   const todoRouteMatch = useMatch("/");
   const navigate = useNavigate();
 
@@ -115,6 +118,7 @@ const Todo = () => {
   const handleLogoutClick = () => {
     const returnValue = window.confirm("로그아웃 하시겠습니까?");
     if (returnValue) {
+      setIsLogin(false);
       removeToken();
       navigate("/auth");
     }
