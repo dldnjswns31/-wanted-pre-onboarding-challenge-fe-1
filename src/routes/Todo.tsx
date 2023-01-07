@@ -9,6 +9,7 @@ import { isLoginState } from "../recoil/atoms";
 import { getTodos } from "../apis/todo";
 import { ITodo } from "../types/todo";
 import { removeToken } from "../utils/authToken";
+import { axiosInstance } from "../apis/core/axiosInstance";
 
 const StMainContainer = styled.div`
   display: flex;
