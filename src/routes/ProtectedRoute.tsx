@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isLoginState } from "../recoil/atoms";
-import { IProtectedRouterProps } from "../types/auth";
+import { IProtectedRouterProps } from "../types/apis/auth";
 import { getToken } from "../utils/authToken";
 
 const ProtectedRoute = ({ authenticate }: IProtectedRouterProps) => {

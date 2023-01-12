@@ -1,5 +1,5 @@
+import { IForm } from "../types/apis/auth";
 import { setToken } from "./../utils/authToken";
-import { IForm } from "./../types/auth";
 import { axiosInstance } from "./core/axiosInstance";
 
 export const signup = async (form: IForm) => {

@@ -63,7 +63,8 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
   const navigate = useNavigate();
 
   const getTitleAndContent = () => {
-    getTodosById(id!)
+    if (!id) return;
+    getTodosById(id)
       .then((data) => {
         setTodo(data.data);
         setTodoForm({ title: data.data.title, content: data.data.content });
@@ -96,12 +97,14 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
   };
 
   const handleCancelClick = () => {
+    if (!todo) return;
     setIsModify((prev) => !prev);
-    setTodoForm({ title: todo!.title, content: todo!.content });
+    setTodoForm({ title: todo.title, content: todo!.content });
   };
 
   const handleConfirmClick = () => {
-    updateTodo(todoForm, id!)
+    if (!id) return;
+    updateTodo(todoForm, id)
       .then(() => {
         setIsModify((prev) => !prev);
         getTitleAndContent();
@@ -111,9 +114,10 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
   };
 
   const handleDeleteClick = () => {
+    if (!id) return;
     const returnValue = window.confirm("정말 삭제하시겠습니까?");
     if (returnValue) {
-      deleteTodo(id!)
+      deleteTodo(id)
         .then(() => {
           getTodoList();
           navigate("/");
