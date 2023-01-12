@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+
 import { deleteTodo, getTodosById, updateTodo } from "../../apis/todo";
+import useModal from "../../hooks/useModal";
 import { INewTodo, ITodo } from "../../types/apis/todo";
+import Modal from "../common/Modal";
+import DeleteTodoModal from "./DeleteTodoModal";
 
 const StTodoDetail = styled.div`
   flex: 9 0;
@@ -58,6 +62,7 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
     title: "",
     content: "",
   });
+  const { isModalOpen, toggleModal } = useModal();
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -115,15 +120,12 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
 
   const handleDeleteClick = () => {
     if (!id) return;
-    const returnValue = window.confirm("정말 삭제하시겠습니까?");
-    if (returnValue) {
-      deleteTodo(id)
-        .then(() => {
-          getTodoList();
-          navigate("/");
-        })
-        .catch((err) => console.log(err));
-    }
+    deleteTodo(id)
+      .then(() => {
+        getTodoList();
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -131,6 +133,14 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
       {todo && (
         <>
           <StTodoDetail>
+            {isModalOpen && (
+              <Modal setIsModalOpen={toggleModal} width="300" height="200">
+                <DeleteTodoModal
+                  handleYesClick={handleDeleteClick}
+                  handleNoClick={toggleModal}
+                />
+              </Modal>
+            )}
             {isModify ? (
               <>
                 <StModifyTitle
@@ -167,7 +177,7 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
                 <StButton color="blue" onClick={handleModifyClick}>
                   modify
                 </StButton>
-                <StButton color="red" onClick={handleDeleteClick}>
+                <StButton color="red" onClick={toggleModal}>
                   delete
                 </StButton>
               </>

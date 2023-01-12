@@ -1,19 +1,23 @@
 import React, { useState } from "react";
 
-type Modal = [
-  boolean,
-  React.Dispatch<React.SetStateAction<boolean>>,
-  () => void
-];
+interface useModalReturnType {
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleModal: () => void;
+}
 
-const useModal = (): Modal => {
-  const [isOpen, setIsOpen] = useState(false);
+/**
+ *
+ * @returns {상태, 상태갱신함수, 상태갱신토글}
+ */
+const useModal = (): useModalReturnType => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => {
-    setIsOpen((prev) => !prev);
+    setIsModalOpen((prev) => !prev);
   };
 
-  return [isOpen, setIsOpen, toggleModal];
+  return { isModalOpen, setIsModalOpen, toggleModal };
 };
 
 export default useModal;

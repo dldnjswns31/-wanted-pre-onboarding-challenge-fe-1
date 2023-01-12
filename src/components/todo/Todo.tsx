@@ -79,7 +79,7 @@ const StAddButton = styled.button`
 const Todo = () => {
   const [todoList, setTodoList] = useState<null | ITodo[]>(null);
   const [selectedTodo, setSelectedTodo] = useState<null | string>(null);
-  const [isModalOpen, setIsModalOpen, toggleModal] = useModal();
+  const { isModalOpen, setIsModalOpen, toggleModal } = useModal();
 
   const setIsLogin = useSetRecoilState(isLoginState);
   const todoRouteMatch = useMatch("/");
