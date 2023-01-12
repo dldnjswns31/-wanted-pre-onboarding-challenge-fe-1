@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { ITodoList } from "../../types/components/todo";
 
@@ -30,24 +30,16 @@ const StTodo = styled.li<{ isSelected: boolean }>`
   cursor: pointer;
 `;
 
-const TodoList = ({ todoList, selectedTodo, setSelectedTodo }: ITodoList) => {
-  const handleTodoClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    if (!(e.target instanceof HTMLLIElement)) return;
-    if (!e.target.dataset.id) return;
-    setSelectedTodo(e.target.dataset.id);
-  };
+const TodoList = ({ todoList }: ITodoList) => {
+  const params = useParams();
+  const paramId = params["*"];
+
   return (
     <StTodoList>
       {todoList &&
         todoList?.map((todo) => (
           <Link key={todo.id} to={`/${todo.id}`}>
-            <StTodo
-              data-id={todo.id}
-              isSelected={todo.id === selectedTodo}
-              onClick={handleTodoClick}
-            >
-              {todo.title}
-            </StTodo>
+            <StTodo isSelected={todo.id === paramId}>{todo.title}</StTodo>
           </Link>
         ))}
     </StTodoList>

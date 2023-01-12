@@ -118,11 +118,7 @@ const Todo = () => {
           <StSectionTitle>
             <StLogout onClick={handleLogoutClick}>Logout</StLogout> List
           </StSectionTitle>
-          <TodoList
-            todoList={todoList}
-            selectedTodo={selectedTodo}
-            setSelectedTodo={setSelectedTodo}
-          />
+          <TodoList todoList={todoList} />
           <StAddButton onClick={toggleModal}>Add Todo</StAddButton>
         </StSection>
         <StSection>
