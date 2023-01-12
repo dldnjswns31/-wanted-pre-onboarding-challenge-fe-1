@@ -99,7 +99,7 @@ const StAddButton = styled.button`
   font-family: inherit;
 `;
 
-const Todo = () => {
+const TodoPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoList, setTodoList] = useState<null | ITodo[]>(null);
   const [selectedTodo, setSelectedTodo] = useState<null | string>(null);
@@ -184,4 +184,4 @@ const Todo = () => {
   );
 };
 
-export default Todo;
+export default TodoPage;

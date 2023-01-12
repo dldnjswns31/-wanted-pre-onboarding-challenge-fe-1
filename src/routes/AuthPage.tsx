@@ -118,7 +118,7 @@ const StButton = styled.button`
   font-family: inherit;
 `;
 
-const Auth = () => {
+const AuthPage = () => {
   const [tab, setTab] = useState<"login" | "sign up">("login");
   const [form, setForm] = useState<IForm>({ email: "", password: "" });
   const [isValid, setIsValid] = useState(false);
@@ -216,4 +216,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default AuthPage;

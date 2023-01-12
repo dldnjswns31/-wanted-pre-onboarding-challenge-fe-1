@@ -1,17 +1,17 @@
 import { Routes, Route } from "react-router-dom";
 
-import Auth from "./routes/Auth";
+import AuthPage from "./routes/AuthPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import Todo from "./routes/Todo";
+import TodoPage from "./routes/TodoPage";
 
 const Router = () => {
   return (
     <Routes>
       <Route element={<ProtectedRoute authenticate={true} />}>
-        <Route path="/*" element={<Todo />} />
+        <Route path="/*" element={<TodoPage />} />
       </Route>
       <Route element={<ProtectedRoute authenticate={false} />}>
-        <Route path="/auth" element={<Auth />} />
+        <Route path="/auth" element={<AuthPage />} />
       </Route>
     </Routes>
   );
