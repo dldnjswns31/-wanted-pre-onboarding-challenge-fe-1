@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { createTodo } from "../../apis/todo";
-import { IModalProps, INewTodo } from "../../types/todo";
+import { IModalProps, INewTodo } from "../../types/apis/todo";
 
 const StModalBackground = styled.div`
   position: absolute;

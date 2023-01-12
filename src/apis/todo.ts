@@ -1,4 +1,4 @@
-import { INewTodo } from "./../types/todo";
+import { INewTodo } from "../types/apis/todo";
 import { axiosInstance } from "./core/axiosInstance";
 
 export const getTodos = async () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { deleteTodo, getTodosById, updateTodo } from "../../apis/todo";
-import { INewTodo, ITodo } from "../../types/todo";
+import { INewTodo, ITodo } from "../../types/apis/todo";
 
 const StTodoDetail = styled.div`
   flex: 9 0;

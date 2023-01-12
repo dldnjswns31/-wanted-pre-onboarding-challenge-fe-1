@@ -7,7 +7,7 @@ import Modal from "../components/todo/Modal";
 import TodoDetail from "../components/todo/TodoDetail";
 import { isLoginState } from "../recoil/atoms";
 import { getTodos } from "../apis/todo";
-import { ITodo } from "../types/todo";
+import { ITodo } from "../types/apis/todo";
 import { removeToken } from "../utils/authToken";
 
 const StMainContainer = styled.div`
