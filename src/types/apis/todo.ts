@@ -11,8 +11,8 @@ export interface ITodo {
   updatedAt: string;
 }
 
-export interface IModalProps {
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  getTodoList: () => void;
-  handleModalOpen: () => void;
-}
+// export interface IModalProps {
+//   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+//   getTodoList: () => void;
+//   handleModalOpen: () => void;
+// }

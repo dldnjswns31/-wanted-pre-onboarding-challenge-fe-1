@@ -1,25 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { createTodo } from "../../apis/todo";
-import { IModalProps, INewTodo } from "../../types/apis/todo";
-
-const StModalBackground = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
-`;
-
-const StModal = styled.div`
-  display: inline-block;
-  width: 400px;
-  height: 400px;
-  padding: 1rem;
-  background-color: white;
-`;
+import { INewTodo } from "../../types/apis/todo";
 
 const StModalTitle = styled.h3`
   width: 100%;
@@ -67,11 +49,12 @@ const StModalButton = styled.button`
   font-family: inherit;
 `;
 
-const Modal = ({
-  setIsModalOpen,
-  getTodoList,
-  handleModalOpen,
-}: IModalProps) => {
+interface IAddTodoModalProps {
+  getTodoList: () => void;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AddTodoModal = ({ getTodoList, setIsModalOpen }: IAddTodoModalProps) => {
   const [todoForm, setTodoForm] = useState<INewTodo>({
     title: "",
     content: "",
@@ -100,37 +83,35 @@ const Modal = ({
   };
 
   const handleCancelClick = () => {
-    handleModalOpen();
+    setIsModalOpen((prev) => !prev);
     setTodoForm({ title: "", content: "" });
   };
 
   return (
-    <StModalBackground onClick={handleModalOpen}>
-      <StModal onClick={(e) => e.stopPropagation()}>
-        <StModalTitle>New Todo</StModalTitle>
-        <StForm onSubmit={handleTodoSubmit}>
-          <StModalTodoTitle
-            type="text"
-            name="title"
-            placeholder="title"
-            onChange={handleFormChange}
-            autoFocus
-          />
-          <StModalTodoContent
-            name="content"
-            placeholder="content"
-            onChange={handleFormChange}
-          />
-          <div>
-            <StModalButton name="add">Add</StModalButton>
-            <StModalButton name="cancel" onClick={handleCancelClick}>
-              Cancel
-            </StModalButton>
-          </div>
-        </StForm>
-      </StModal>
-    </StModalBackground>
+    <>
+      <StModalTitle>New Todo</StModalTitle>
+      <StForm onSubmit={handleTodoSubmit}>
+        <StModalTodoTitle
+          type="text"
+          name="title"
+          placeholder="title"
+          onChange={handleFormChange}
+          autoFocus
+        />
+        <StModalTodoContent
+          name="content"
+          placeholder="content"
+          onChange={handleFormChange}
+        />
+        <div>
+          <StModalButton name="add">Add</StModalButton>
+          <StModalButton name="cancel" onClick={handleCancelClick}>
+            Cancel
+          </StModalButton>
+        </div>
+      </StForm>
+    </>
   );
 };
 
-export default Modal;
+export default AddTodoModal;

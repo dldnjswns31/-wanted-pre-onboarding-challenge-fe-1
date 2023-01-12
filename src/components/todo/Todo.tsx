@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Route, Routes, useMatch, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { getTodos } from "../../apis/todo";
+import useModal from "../../hooks/useModal";
 import { isLoginState } from "../../recoil/atoms";
 import { ITodo } from "../../types/apis/todo";
 import { removeToken } from "../../utils/authToken";
-import Modal from "./Modal";
+import Modal from "../common/Modal";
+import AddTodoModal from "./AddTodoModal";
+
 import TodoDetail from "./TodoDetail";
 import TodoList from "./TodoList";
 
@@ -73,9 +77,9 @@ const StAddButton = styled.button`
 `;
 
 const Todo = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoList, setTodoList] = useState<null | ITodo[]>(null);
   const [selectedTodo, setSelectedTodo] = useState<null | string>(null);
+  const [isModalOpen, setIsModalOpen, toggleModal] = useModal();
 
   const setIsLogin = useSetRecoilState(isLoginState);
   const todoRouteMatch = useMatch("/");
@@ -89,10 +93,6 @@ const Todo = () => {
     getTodoList();
   }, []);
 
-  const handleModalOpen = () => {
-    setIsModalOpen((prev) => !prev);
-  };
-
   const handleLogoutClick = () => {
     const returnValue = window.confirm("로그아웃 하시겠습니까?");
     if (returnValue) {
@@ -105,11 +105,12 @@ const Todo = () => {
   return (
     <>
       {isModalOpen && (
-        <Modal
-          setIsModalOpen={setIsModalOpen}
-          getTodoList={getTodoList}
-          handleModalOpen={handleModalOpen}
-        />
+        <Modal setIsModalOpen={toggleModal}>
+          <AddTodoModal
+            getTodoList={getTodoList}
+            setIsModalOpen={setIsModalOpen}
+          />
+        </Modal>
       )}
 
       <StMainContainer>
@@ -122,7 +123,7 @@ const Todo = () => {
             selectedTodo={selectedTodo}
             setSelectedTodo={setSelectedTodo}
           />
-          <StAddButton onClick={handleModalOpen}>Add Todo</StAddButton>
+          <StAddButton onClick={toggleModal}>Add Todo</StAddButton>
         </StSection>
         <StSection>
           <StSectionTitle>Todo</StSectionTitle>
