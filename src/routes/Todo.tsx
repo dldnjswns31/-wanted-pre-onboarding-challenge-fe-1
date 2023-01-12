@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Link,
-  useNavigate,
-  Route,
-  Routes,
-  useMatch,
-  useParams,
-} from "react-router-dom";
+import { Link, useNavigate, Route, Routes, useMatch } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 

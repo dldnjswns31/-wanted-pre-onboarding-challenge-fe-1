@@ -1,21 +1,18 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { RecoilRoot } from "recoil";
 
-import Auth from "./routes/Auth";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import Todo from "./routes/Todo";
+import Router from "./Router";
+import { GlobalStyle } from "./styles/globalStyle";
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route element={<ProtectedRoute authenticate={true} />}>
-          <Route path="/*" element={<Todo />} />
-        </Route>
-        <Route element={<ProtectedRoute authenticate={false} />}>
-          <Route path="/auth" element={<Auth />} />
-        </Route>
-      </Routes>
+      <GlobalStyle />
+      <BrowserRouter>
+        <RecoilRoot>
+          <Router />
+        </RecoilRoot>
+      </BrowserRouter>
     </>
   );
 }

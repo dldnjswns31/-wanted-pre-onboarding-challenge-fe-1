@@ -12,7 +12,6 @@ export const signup = async (form: IForm) => {
     alert("회원가입에 성공했습니다.");
     return;
   } catch (err) {
-    alert("");
     throw err;
   }
 };
