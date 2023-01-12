@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, Route, Routes, useMatch } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  Route,
+  Routes,
+  useMatch,
+  useParams,
+} from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -9,7 +16,6 @@ import { isLoginState } from "../recoil/atoms";
 import { getTodos } from "../apis/todo";
 import { ITodo } from "../types/todo";
 import { removeToken } from "../utils/authToken";
-import { axiosInstance } from "../apis/core/axiosInstance";
 
 const StMainContainer = styled.div`
   display: flex;
@@ -78,11 +84,15 @@ const StTodoList = styled.ul`
   }
 `;
 
-const StTodo = styled.li`
+const StTodo = styled.li<{ isSelected: boolean }>`
   padding: 0.5rem;
   margin-bottom: 1rem;
   border: 1px solid #999999;
+  border: ${({ isSelected }) =>
+    isSelected ? "1px solid #017be8" : "1px solid #999999"};
   border-radius: 10px;
+  background-color: ${({ isSelected }) => isSelected && "#017be8"};
+  color: ${({ isSelected }) => isSelected && "white"};
   font-size: 1.5rem;
   cursor: pointer;
 `;
@@ -99,6 +109,7 @@ const StAddButton = styled.button`
 const Todo = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todoList, setTodoList] = useState<null | ITodo[]>(null);
+  const [selectedTodo, setSelectedTodo] = useState<null | string>(null);
 
   const setIsLogin = useSetRecoilState(isLoginState);
   const todoRouteMatch = useMatch("/");
@@ -124,6 +135,12 @@ const Todo = () => {
       navigate("/auth");
     }
   };
+
+  const handleTodoClick = (e: React.MouseEvent<HTMLLIElement>) => {
+    if (!(e.target instanceof HTMLLIElement)) return;
+    if (!e.target.dataset.id) return;
+    setSelectedTodo(e.target.dataset.id);
+  };
   return (
     <>
       {isModalOpen && (
@@ -143,7 +160,13 @@ const Todo = () => {
             {todoList &&
               todoList?.map((todo) => (
                 <Link key={todo.id} to={`/${todo.id}`}>
-                  <StTodo>{todo.title}</StTodo>
+                  <StTodo
+                    data-id={todo.id}
+                    isSelected={todo.id === selectedTodo}
+                    onClick={handleTodoClick}
+                  >
+                    {todo.title}
+                  </StTodo>
                 </Link>
               ))}
           </StTodoList>
