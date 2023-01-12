@@ -75,6 +75,7 @@ const TodoDetail = ({ getTodoList }: { getTodoList: () => void }) => {
   };
 
   useEffect(() => {
+    setIsModify(false);
     getTitleAndContent();
   }, [id]);
 
