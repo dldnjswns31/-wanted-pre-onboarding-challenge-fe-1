@@ -33,20 +33,7 @@ const StTab = styled.button<{ isSelect: boolean }>`
   }
 `;
 
-const AuthTab = ({
-  tab,
-  setTab,
-  setErrorMessage,
-  setForm,
-  setIsValid,
-}: IAuthTab) => {
-  const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (e.currentTarget.name === "login") setTab("login");
-    if (e.currentTarget.name === "signup") setTab("sign up");
-    setErrorMessage("");
-    setForm({ email: "", password: "" });
-    setIsValid(false);
-  };
+const AuthTab = ({ tab, handleTabClick }: IAuthTab) => {
   return (
     <StTabContainer>
       <StTab

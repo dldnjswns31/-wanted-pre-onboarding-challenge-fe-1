@@ -1,14 +1,7 @@
-import { AxiosError } from "axios";
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { login, signup } from "../../apis/auth";
-import { isLoginState } from "../../recoil/atoms";
 import { IAuthForm } from "../../types/components/auth";
-import { setToken } from "../../utils/authToken";
-import { validator } from "../../utils/validator";
 
 const StFormContainer = styled.div`
   height: 100%;
@@ -70,55 +63,11 @@ const StButton = styled.button`
 const AuthForm = ({
   tab,
   form,
-  setForm,
   isValid,
-  setIsValid,
   errorMessage,
-  setErrorMessage,
+  handleSubmit,
+  handleInputChange,
 }: IAuthForm) => {
-  const setIsLogin = useSetRecoilState(isLoginState);
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (tab === "login") {
-      try {
-        const { data } = await login(form);
-        setToken(data.token);
-        setIsLogin(true);
-        navigate("/");
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          setErrorMessage(err.response?.data.details);
-        }
-      }
-    }
-    if (tab === "sign up") {
-      try {
-        await signup(form);
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          setErrorMessage(err.response?.data.details);
-        }
-      }
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = e.currentTarget;
-    let newForm = { ...form };
-
-    if (name === "email") {
-      newForm.email = e.target.value;
-      setForm(newForm);
-    }
-    if (name === "password") {
-      newForm.password = e.target.value;
-      setForm(newForm);
-    }
-    if (validator(newForm)) setIsValid(true);
-    else setIsValid(false);
-  };
   return (
     <>
       <StFormContainer>

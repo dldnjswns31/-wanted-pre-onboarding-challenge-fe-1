@@ -1,6 +1,15 @@
+import { AxiosError } from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
+import { login, signup } from "../../apis/auth";
+import { isLoginState } from "../../recoil/atoms";
 import { IForm } from "../../types/apis/auth";
+import { setToken } from "../../utils/authToken";
+import { validator } from "../../utils/validator";
+
 import AuthForm from "./AuthForm";
 import AuthTab from "./AuthTab";
 
@@ -32,25 +41,72 @@ const Auth = () => {
   const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const setIsLogin = useSetRecoilState(isLoginState);
+  const navigate = useNavigate();
+
+  // AuthTab props
+  const handleTabClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.name === "login") setTab("login");
+    if (e.currentTarget.name === "signup") setTab("sign up");
+    setErrorMessage("");
+    setForm({ email: "", password: "" });
+    setIsValid(false);
+  };
+
+  // AuthForm props
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (tab === "login") {
+      try {
+        const { data } = await login(form);
+        setToken(data.token);
+        setIsLogin(true);
+        navigate("/");
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          setErrorMessage(err.response?.data.details);
+        }
+      }
+    }
+    if (tab === "sign up") {
+      try {
+        await signup(form);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          setErrorMessage(err.response?.data.details);
+        }
+      }
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = e.currentTarget;
+    let newForm = { ...form };
+
+    if (name === "email") {
+      newForm.email = e.target.value;
+      setForm(newForm);
+    }
+    if (name === "password") {
+      newForm.password = e.target.value;
+      setForm(newForm);
+    }
+    if (validator(newForm)) setIsValid(true);
+    else setIsValid(false);
+  };
+
   return (
     <StContainer>
       <StTitle>My Todo List</StTitle>
       <StAuthContainer>
-        <AuthTab
-          tab={tab}
-          setTab={setTab}
-          setIsValid={setIsValid}
-          setErrorMessage={setErrorMessage}
-          setForm={setForm}
-        />
+        <AuthTab tab={tab} handleTabClick={handleTabClick} />
         <AuthForm
           tab={tab}
           form={form}
-          setForm={setForm}
           isValid={isValid}
-          setIsValid={setIsValid}
           errorMessage={errorMessage}
-          setErrorMessage={setErrorMessage}
+          handleSubmit={handleSubmit}
+          handleInputChange={handleInputChange}
         />
       </StAuthContainer>
     </StContainer>
