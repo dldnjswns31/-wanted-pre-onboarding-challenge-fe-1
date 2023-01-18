@@ -1,33 +1,10 @@
 import { IForm } from "../types/apis/auth";
-import { setToken } from "./../utils/authToken";
 import { axiosInstance } from "./core/axiosInstance";
 
 export const signup = async (form: IForm) => {
-  const { email, password } = form;
-  try {
-    await axiosInstance.post("/users/create", {
-      email,
-      password,
-    });
-    alert("회원가입에 성공했습니다.");
-    return;
-  } catch (err) {
-    throw err;
-  }
+  return axiosInstance.post("/users/create", form);
 };
 
 export const login = async (form: IForm) => {
-  const { email, password } = form;
-
-  try {
-    const { data } = await axiosInstance.post("/users/login", {
-      email,
-      password,
-    });
-    setToken(data.token);
-    alert("로그인에 성공했습니다. Todo 페이지로 이동합니다.");
-    return;
-  } catch (err) {
-    throw err;
-  }
+  return axiosInstance.post("/users/login", form);
 };

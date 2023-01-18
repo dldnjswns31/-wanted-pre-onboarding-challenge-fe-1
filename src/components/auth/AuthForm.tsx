@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -6,6 +7,7 @@ import styled from "styled-components";
 import { login, signup } from "../../apis/auth";
 import { isLoginState } from "../../recoil/atoms";
 import { IAuthForm } from "../../types/components/auth";
+import { setToken } from "../../utils/authToken";
 import { validator } from "../../utils/validator";
 
 const StFormContainer = styled.div`
@@ -77,22 +79,28 @@ const AuthForm = ({
   const setIsLogin = useSetRecoilState(isLoginState);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (tab === "login") {
-      login(form)
-        .then(() => {
-          setIsLogin(true);
-          navigate("/");
-        })
-        .catch((err) => setErrorMessage(err.response.data.details));
+      try {
+        const { data } = await login(form);
+        setToken(data.token);
+        setIsLogin(true);
+        navigate("/");
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          setErrorMessage(err.response?.data.details);
+        }
+      }
     }
     if (tab === "sign up") {
-      signup(form)
-        .then(() => {
-          login(form).then(() => navigate("/"));
-        })
-        .catch((err) => setErrorMessage(err.response.data.details));
+      try {
+        await signup(form);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          setErrorMessage(err.response?.data.details);
+        }
+      }
     }
   };
 
