@@ -9,8 +9,8 @@ import { isLoginState } from "../../recoil/atoms";
 import { ITodo } from "../../types/apis/todo";
 import { removeToken } from "../../utils/authToken";
 import Modal from "../common/Modal";
-import AddTodoModal from "./AddTodoModal";
 
+import AddTodoModal from "./AddTodoModal";
 import TodoDetail from "./TodoDetail";
 import TodoList from "./TodoList";
 
@@ -78,7 +78,6 @@ const StAddButton = styled.button`
 
 const Todo = () => {
   const [todoList, setTodoList] = useState<null | ITodo[]>(null);
-  const [selectedTodo, setSelectedTodo] = useState<null | string>(null);
   const { isModalOpen, setIsModalOpen, toggleModal } = useModal();
 
   const setIsLogin = useSetRecoilState(isLoginState);

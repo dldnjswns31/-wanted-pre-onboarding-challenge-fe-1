@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { ITodoList } from "../../types/components/todo";
 
@@ -31,15 +31,17 @@ const StTodo = styled.li<{ isSelected: boolean }>`
 `;
 
 const TodoList = ({ todoList }: ITodoList) => {
-  const params = useParams();
-  const paramId = params["*"];
+  const { pathname } = useLocation();
+  const selectedTodoId = pathname.slice(1);
 
   return (
     <StTodoList>
       {todoList &&
         todoList?.map((todo) => (
           <Link key={todo.id} to={`/${todo.id}`}>
-            <StTodo isSelected={todo.id === paramId}>{todo.title}</StTodo>
+            <StTodo isSelected={todo.id === selectedTodoId}>
+              {todo.title}
+            </StTodo>
           </Link>
         ))}
     </StTodoList>
